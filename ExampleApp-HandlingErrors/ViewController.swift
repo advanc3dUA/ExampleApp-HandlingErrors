@@ -49,7 +49,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func rollDiceTapped(_ sender: Any) {
-        // Roll Dice
+        viewModel.rollDice()
     }
 }
 
