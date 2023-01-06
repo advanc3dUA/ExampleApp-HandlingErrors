@@ -30,6 +30,15 @@ class DiceViewModel {
         rollSubject
             .flatMap { [unowned self] in
                 roll()
+                    .handleEvents(
+                        receiveSubscription: { [unowned self] _ in
+                            isRolling = true
+                        },
+                        receiveCompletion: { [unowned self] _ in
+                            isRolling = false
+                        }, receiveCancel: { [unowned self] in
+                            isRolling = false
+                        })
                     .map { $0 as Int? }
                     .catch { error -> Just<Int?> in
                         print("Error: \(error)")
