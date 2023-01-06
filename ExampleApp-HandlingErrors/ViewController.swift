@@ -21,6 +21,24 @@ class ViewController: UIViewController {
         configureDiceImage()
         
         // Setup Subscriptions
+        viewModel.$diceImage
+            .map { $0 as UIImage? }
+            .assign(to: \.image, on: diceImage)
+            .store(in: &cancellables)
+        
+        viewModel.$isRolling
+            .map { !$0 }
+            .assign(to: \.isEnabled, on: rollDiceButton)
+            .store(in: &cancellables)
+        
+        viewModel.$isRolling
+            .sink { [unowned self] isRolling in
+                UIView.animate(withDuration: 0.5) {
+                    self.diceImage.alpha = isRolling ? 0.5 : 1.0
+                    self.diceImage.transform = isRolling ? CGAffineTransform(scaleX: 0.5, y: 0.5) : CGAffineTransform.identity
+                }
+            }
+            .store(in: &cancellables)
     }
     
     private func configureDiceImage() {

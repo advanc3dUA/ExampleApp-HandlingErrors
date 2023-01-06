@@ -11,7 +11,10 @@ import Combine
 class DiceViewModel {
     private static var unknownDiceImage = UIImage(systemName: "questionmark.square.fill")!
     
+    @Published
     var isRolling = false
+    
+    @Published
     var diceImage: UIImage = unknownDiceImage
     
     enum DiceError: Error {
