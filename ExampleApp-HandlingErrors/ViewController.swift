@@ -39,6 +39,18 @@ class ViewController: UIViewController {
                 }
             }
             .store(in: &cancellables)
+        
+        viewModel.$error
+            .compactMap { $0 }
+            .sink { [unowned self] error in
+                let alert = UIAlertController(title: "Dice Error", message: "\(error)", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Dissmiss", style: .cancel))
+                alert.addAction(UIAlertAction(title: "Reroll", style: .default, handler: { [unowned self] _ in
+                    rollDiceTapped(self)
+                }))
+                present(alert, animated: true)
+            }
+            .store(in: &cancellables)
     }
     
     private func configureDiceImage() {
